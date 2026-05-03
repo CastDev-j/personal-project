@@ -1,0 +1,31 @@
+{
+  "compatibility_date": "2026-05-03",
+  "compatibility_flags": ["global_fetch_strictly_public", "nodejs_compat"],
+  "name": "personal-project",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+  },
+  "observability": {
+    "enabled": true,
+  },
+  "ratelimits": [
+    {
+      "name": "RATE_LIMIT",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 100,
+        "period": 60,
+      },
+    },
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "personal-project",
+      "database_id": "35c4de1a-9c5c-456c-b37c-38adcd62113a",
+      "remote": true,
+    },
+  ],
+}

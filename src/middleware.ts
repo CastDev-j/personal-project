@@ -16,8 +16,6 @@ const rateLimit = defineMiddleware(async (context, next) => {
 });
 
 const authMiddleware = defineMiddleware(async (context, next) => {
-  const { action } = getActionContext(context);
-
   const isAuthed = await auth.api.getSession({
     headers: context.request.headers,
   });
@@ -28,10 +26,6 @@ const authMiddleware = defineMiddleware(async (context, next) => {
   } else {
     context.locals.user = null;
     context.locals.session = null;
-  }
-
-  if (action) {
-    return next();
   }
 
   return next();

@@ -1,19 +1,19 @@
 ---
 import "@/styles/global.css";
-import AuthButton from "@/components/AuthButton";
+import MainLayout from "@/layouts/MainLayout.astro";
+
+const user = Astro.locals.user;
+const session = Astro.locals.session;
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <h1>Astro</h1>
-    <AuthButton client:load />
-  </body>
-</html>
+<MainLayout title="Inicio">
+  <h1>Inicio</h1>
+  {session}
+
+  <code class="w-full overflow-x-scroll">
+    <pre
+      class="whitespace-pre-wrap wrap-break-word">
+      {JSON.stringify(user, null, 2)}
+    </pre>
+  </code>
+</MainLayout>

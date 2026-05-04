@@ -1,0 +1,22 @@
+---
+import { FaGithub } from "react-icons/fa";
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="flex justify-center w-full border-t-2 border-neutral-200">
+  <div
+    class="flex justify-between items-center gap-4 w-full max-w-5xl px-4 py-6"
+  >
+    <a
+      href="https://github.com/CastDev-j/personal-project"
+      class="text-indigo-500 hover:underline underline-offset-2 flex items-center gap-2"
+    >
+      <FaGithub />
+      <span>Repositorio</span>
+    </a>
+    <p class="text-sm text-neutral-500">
+      © {currentYear} Disfruta de la experiencia.
+    </p>
+  </div>
+</footer>

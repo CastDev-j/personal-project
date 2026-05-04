@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+@theme {}
+
+@layer base {
+    html {
+        font-family: var(--font-roboto);
+        scroll-behavior: smooth;
+
+    }
+}

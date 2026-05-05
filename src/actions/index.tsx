@@ -40,7 +40,7 @@ export const server = {
 
       try {
         const { data, error } = await resend.emails.send({
-          from: `${user.name} <${env.RESEND_FROM_EMAIL}>`,
+          from: `${user.name} <my.app@castdevj.lat>`,
           to: [to],
           subject: subject,
           react: (

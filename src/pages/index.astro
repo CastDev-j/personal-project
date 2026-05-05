@@ -1,19 +1,52 @@
 ---
 import "@/styles/global.css";
 import MainLayout from "@/layouts/MainLayout.astro";
+import { actions } from "astro:actions";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 
-const user = Astro.locals.user;
 const session = Astro.locals.session;
+let result: any = null;
+
+if (session) {
+  if (Astro.request.method === "POST") {
+    const formData = await Astro.request.formData();
+    result = await Astro.callAction(actions.send, formData);
+  }
+}
 ---
 
 <MainLayout title="Inicio">
   <h1>Inicio</h1>
-  {session}
 
-  <code class="w-full overflow-x-scroll">
-    <pre
-      class="whitespace-pre-wrap wrap-break-word">
-      {JSON.stringify(user, null, 2)}
-    </pre>
-  </code>
+  {
+    session && (
+      <div class="flex flex-col max-w-md mx-auto my-4 gap-6">
+        <form method="POST" class="flex flex-col gap-4">
+          <Input type="email" name="to" placeholder="Email destino" required />
+          <Input type="text" name="subject" placeholder="Asunto" required />
+          <Input
+            type="textarea"
+            name="content"
+            placeholder="Mensaje"
+            required
+          />
+          <Button type="submit">Enviar correo</Button>
+        </form>
+
+        {result?.error && (
+          <p class="text-red-600 bg-red-50 p-3 rounded-lg">
+            Error: {result.error.message}
+          </p>
+        )}
+        {result?.data?.success && (
+          <p class="text-green-600 bg-green-50 p-3 rounded-lg">
+            {result.data.message}
+          </p>
+        )}
+      </div>
+    )
+  }
+
+  {!session && <p>Por favor, inicia sesión para enviar correos.</p>}
 </MainLayout>

@@ -1,5 +1,7 @@
 ---
 import AuthButton from "../auth/AuthButton";
+
+const user = Astro.locals.user;
 ---
 
 <header class="flex justify-center w-full border-b-2 border-neutral-200">
@@ -7,6 +9,6 @@ import AuthButton from "../auth/AuthButton";
     class="flex justify-between items-center gap-4 w-full max-w-5xl px-4 py-2"
   >
     <h1 class="font-semibold text-lg">My App</h1>
-    <AuthButton client:load />
+    <AuthButton client:load user={user} />
   </div>
 </header>

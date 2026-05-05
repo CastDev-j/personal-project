@@ -18,7 +18,7 @@ const Button = ({
   ...props
 }: ButtonProps) => {
   const baseStyles =
-    "inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors outline-none select-none disabled:pointer-events-none disabled:opacity-50";
+    "inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all outline-none select-none disabled:pointer-events-none disabled:opacity-50";
 
   const sizeStyles = {
     default: "py-2 px-2.5 gap-1.5",

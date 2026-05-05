@@ -1,8 +1,12 @@
+import type { User } from "better-auth";
 import { signIn, useSession, signOut } from "@/lib/auth-client";
 import { Button } from "@/components/ui/Button";
 import { FaGoogle } from "react-icons/fa";
-import { useState } from "react";
-import { navigate } from "astro:transitions/client";
+import { useState, type FC } from "react";
+
+interface Props {
+  user: User | null;
+}
 
 const getInitials = (name: string) => {
   return name
@@ -13,8 +17,7 @@ const getInitials = (name: string) => {
     .slice(0, 2);
 };
 
-const AuthButton = () => {
-  const { data: session, isPending, isRefetching } = useSession();
+const AuthButton: FC<Props> = ({ user }) => {
   const [isLoginOut, setIsLoginOut] = useState(false);
 
   const handleGoogleSignIn = async () => {
@@ -39,12 +42,12 @@ const AuthButton = () => {
 
   return (
     <>
-      {!session?.session ? (
+      {!user ? (
         <Button
           type="button"
           variant="outline"
           onClick={handleGoogleSignIn}
-          disabled={isPending || isLoginOut}
+          disabled={isLoginOut}
         >
           <FaGoogle /> <span>Iniciar sesión con Google</span>
         </Button>
@@ -53,18 +56,18 @@ const AuthButton = () => {
           type="button"
           variant="outline"
           onClick={handleLogOut}
-          disabled={isRefetching || isLoginOut || isPending}
+          disabled={isLoginOut}
         >
-          {session.user.image ? (
+          {user.image ? (
             <img
-              src={session.user.image}
+              src={user.image}
               alt="User"
               className="size-5 shrink-0 rounded-full object-cover"
               referrerPolicy="no-referrer"
             />
           ) : (
             <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-xs font-medium text-neutral-600">
-              {getInitials(session.user.name)}
+              {getInitials(user.name)}
             </span>
           )}
           <span>Cerrar sesión</span>

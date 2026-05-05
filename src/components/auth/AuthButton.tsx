@@ -21,6 +21,7 @@ const AuthButton = () => {
     await signIn.social({
       provider: "google",
       callbackURL: "/",
+      errorCallbackURL: "/",
     });
   };
 

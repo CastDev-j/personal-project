@@ -51,34 +51,31 @@ export default function VisitCounter({ initialCount }: Props) {
   }, []);
 
   return (
-    <section class="border border-neutral-400 p-4 rounded-sm w-full">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="font-semibold">Contador de visitas</h2>
-        <div class="flex items-center gap-1.5">
+    <section className="border border-neutral-400 p-4 rounded-sm w-full">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="font-semibold">Contador de visitas</h2>
+        <div className="flex items-center gap-1.5">
           <span
-            class={`inline-block h-2 w-2 rounded-full ${
+            className={`inline-block h-2 w-2 rounded-full ${
               connected ? "bg-green-500" : "bg-red-500"
             }`}
           />
-          <span class="text-xs text-neutral-500">
+          <span className="text-xs text-neutral-500">
             {connected ? "connected" : "disconnected"}
           </span>
         </div>
       </div>
 
-      <p class="text-sm text-neutral-500 mb-5">
+      <p className="text-sm text-neutral-500 mb-5">
         Contador en tiempo real con Durable Objects + WebSocket. Abre esta
         página en varias pestañas y mira cómo se actualizan al instante.
       </p>
 
-      <div class="flex items-baseline gap-2">
-        <span
-          ref={countRef}
-          class="text-5xl font-bold tabular-nums"
-        >
+      <div className="flex items-baseline gap-2">
+        <span ref={countRef} className="text-5xl font-bold tabular-nums">
           {count}
         </span>
-        <span class="text-sm text-neutral-500">visitas</span>
+        <span className="text-sm text-neutral-500">visitas</span>
       </div>
     </section>
   );

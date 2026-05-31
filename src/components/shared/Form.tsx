@@ -82,9 +82,9 @@ const Form = () => {
         type="submit"
         className={cn(
           !!errors.form &&
-            "bg-rose-600 opacity-80 pointer-events-none focus:bg-rose-600",
+            "bg-rose-600 opacity-80 pointer-events-none active:bg-rose-600",
           isSubmitSuccessful &&
-            "bg-emerald-600 opacity-80 pointer-events-none focus:bg-emerald-600",
+            "bg-emerald-600 opacity-80 pointer-events-none active:bg-emerald-600",
         )}
         disabled={
           isSubmitting || !isValid || !!errors.form || isSubmitSuccessful

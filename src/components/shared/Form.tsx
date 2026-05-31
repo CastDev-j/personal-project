@@ -32,19 +32,19 @@ const Form = () => {
       onSubmit={handleSubmit(async ({ name }) => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        if (name === "name") {
-          setError("name", {
-            type: "deps",
-            message: "El nombre debe ser diferente a 'name'",
-          });
-          return;
-        }
+        switch (name) {
+          case "name":
+            setError("name", {
+              type: "deps",
+              message: "El nombre debe ser diferente a 'name'",
+            });
 
-        if (name === "error") {
-          setError("form", {
-            type: "deps",
-            message: "Error al enviar el formulario",
-          });
+          case "error":
+            setError("form", {
+              type: "deps",
+              message: "Error al enviar el formulario",
+            });
+            break;
         }
       })}
     >
@@ -81,8 +81,10 @@ const Form = () => {
       <Button
         type="submit"
         className={cn(
-          !!errors.form && "bg-rose-600 opacity-80 pointer-events-none",
-          isSubmitSuccessful && "bg-emerald-600 opacity-80 pointer-events-none",
+          !!errors.form &&
+            "bg-rose-600 opacity-80 pointer-events-none focus:bg-rose-600",
+          isSubmitSuccessful &&
+            "bg-emerald-600 opacity-80 pointer-events-none focus:bg-emerald-600",
         )}
         disabled={
           isSubmitting || !isValid || !!errors.form || isSubmitSuccessful

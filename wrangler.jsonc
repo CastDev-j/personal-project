@@ -2,7 +2,7 @@
   "compatibility_date": "2026-05-03",
   "compatibility_flags": ["global_fetch_strictly_public", "nodejs_compat"],
   "name": "personal-project",
-  "main": "@astrojs/cloudflare/entrypoints/server",
+  "main": "src/durable-objects/index.ts",
   "workers_dev": false,
   "assets": {
     "directory": "./dist",
@@ -27,6 +27,20 @@
       "database_name": "personal-project",
       "database_id": "35c4de1a-9c5c-456c-b37c-38adcd62113a",
       "remote": true,
+    },
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "VISIT_COUNTER",
+        "class_name": "VisitCounter",
+      },
+    ],
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["VisitCounter"],
     },
   ],
 }

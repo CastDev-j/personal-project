@@ -1,8 +1,10 @@
+import { auth } from "@/lib/auth";
 import { handle } from "@astrojs/cloudflare/handler";
 import { DurableObject } from "cloudflare:workers";
 
 export class VisitCounter extends DurableObject {
   private webSockets: WebSocket[] = [];
+  private userSession = new Map<WebSocket, string>();
 
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
@@ -24,7 +26,11 @@ export class VisitCounter extends DurableObject {
     return (result?.value as number) ?? 0;
   }
 
-  async increment(name: string): Promise<number> {
+  async increment(name: string, userId?: string): Promise<number> {
+    if (name === "authenticated" && !userId) {
+      return this.getCounter(name);
+    }
+
     this.ctx.storage.sql.exec(
       `INSERT INTO counters (name, value) VALUES (?, 1)
        ON CONFLICT (name) DO UPDATE SET value = value + 1`,
@@ -64,7 +70,7 @@ export class VisitCounter extends DurableObject {
         );
         break;
       case "increment":
-        await this.increment(data.name);
+        await this.increment(data.name, this.userSession.get(ws));
         break;
     }
   }
@@ -87,11 +93,35 @@ export class VisitCounter extends DurableObject {
       return new Response("Expected WebSocket", { status: 426 });
     }
 
+    const cookieHeader = request.headers.get("Cookie");
+    const userId = await this.validateSession(cookieHeader).catch(() => null);
+
     const [client, server] = Object.values(new WebSocketPair());
     this.webSockets.push(server);
     this.ctx.acceptWebSocket(server);
 
+    if (userId) {
+      this.userSession.set(server, userId);
+      server.send(JSON.stringify({ type: "auth-success", userId }));
+    } else {
+      server.send(JSON.stringify({ type: "auth-success", userId: null }));
+    }
+
     return new Response(null, { status: 101, webSocket: client });
+  }
+
+  private async validateSession(cookie: string | null): Promise<string | null> {
+    if (!cookie) {
+      return null;
+    }
+
+    const session = await auth.api.getSession({
+      headers: new Headers({
+        Cookie: cookie,
+      }),
+    });
+
+    return session?.user.id || null;
   }
 }
 

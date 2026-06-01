@@ -7,12 +7,23 @@ import { env } from "cloudflare:workers";
 
 const user = Astro.locals.user;
 const stub = env.VISIT_COUNTER.getByName("global");
-const initialCount = await stub.increment("homes");
+
+const [publicCount, authCount] = user
+  ? await Promise.all([
+      stub.increment("public"),
+      stub.increment("authenticated", user.id),
+    ])
+  : [await stub.increment("public"), null];
 ---
 
 <MainLayout title="Inicio">
   <div class="flex flex-col gap-4">
-    <VisitCounter initialCount={initialCount} client:load />
+    <VisitCounter
+      publicCount={publicCount}
+      authCount={authCount}
+      isAuthenticated={!!user}
+      client:load
+    />
     {user && <UserCard user={user} />}
     <Form client:load />
   </div>
